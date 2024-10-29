@@ -17,7 +17,8 @@ public enum BaseResponseStatus {
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, false, "잘못된 요청입니다."),
 	INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, false, "잘못된 파일 형식입니다."),
 	FILE_IS_EMPTY(HttpStatus.BAD_REQUEST, false, "파일이 비어있습니다."),
-
+	FAILED_TO_LOGIN(HttpStatus.BAD_REQUEST, false, "로그인에 실패하였습니다."),
+	WRONG_JWT_TOKEN(HttpStatus.BAD_REQUEST, false, "잘못된 JWT 토큰입니다."),
 
 	/*
 	 * 404 NOT_FOUND: 리소스를 찾을 수 없음
@@ -26,6 +27,7 @@ public enum BaseResponseStatus {
 	CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, false, "카테고리 데이터를 찾지 못했습니다."),
 	INVALID_CSV_FORMAT(HttpStatus.BAD_REQUEST, false, "잘못된 CSV 파일 형식입니다."),
 	NOT_FOUND_DATA(HttpStatus.NOT_FOUND, false, "데이터를 찾을 수 없습니다."),
+	AUTH_CODE_INVALID(HttpStatus.NOT_FOUND, false, "인증 코드가 유효하지 않습니다."),
 	/*
 	 * 405 METHOD_NOT_ALLOWED: 허용되지 않은 Request Method 호출
 	 */
