@@ -1,20 +1,17 @@
 package org.example.sharesportsbackend.member.domain;
 
 import java.util.Date;
+import java.util.List;
 
+import jakarta.persistence.*;
 import org.example.sharesportsbackend.auth.domain.Role;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.sharesportsbackend.game.domain.PlayerRecord;
+import org.example.sharesportsbackend.reservation.domain.Reservation;
 
 @Entity
 @Getter
@@ -43,6 +40,12 @@ public class Member {
 
     @Column(nullable = false)
     private Date birth;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations;
+
+    @OneToMany(mappedBy = "user")
+    private List<PlayerRecord> records;
 
     @Builder
     public Member(Long id, String memberUuid, String email, Role role, String name, String password, Date birth) {
