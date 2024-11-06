@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.example.sharesportsbackend.game.domain.Team;
 import org.example.sharesportsbackend.member.domain.Member;
 import org.example.sharesportsbackend.stadium.Stadium;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DialectOverride;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -28,10 +30,13 @@ public class Reservation {
     @JoinColumn(name = "stadium_id")
     private Stadium stadium;
 
-    private LocalDateTime reservationTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
     private Boolean isMatched;
-    private int currentPlayerCount;
-    private int maxPlayerCount;
+
+
+    private int currentPlayerCount = 0;
 
     @ManyToMany
     @JoinTable(
@@ -41,5 +46,12 @@ public class Reservation {
     )
     private List<Team> teams;
 
-
+    public Reservation(Member user, Stadium stadium, LocalDateTime startTime, LocalDateTime endTime, int playerCount) {
+        this.user = user;
+        this.stadium = stadium;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isMatched = false;
+        this.currentPlayerCount += playerCount;
+    }
 }
