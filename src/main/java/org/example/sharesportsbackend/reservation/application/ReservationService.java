@@ -47,8 +47,9 @@ public class ReservationService {
         reservationRepository.delete(reservation);
     }
 
+
     /**
-     * 예약 목록 가져오기 (구장별 예약목록, 시간별 예약 목록)
+     * 예약 목록 가져오기 (구장별 예약목록, 시간별 예약 목록, 사용자가 예약한 목록)
      */
     public List<Reservation> getReservationsByStadium(Stadium stadium) {
         return reservationRepository.findByStadium(stadium);
@@ -56,6 +57,10 @@ public class ReservationService {
 
     public List<Reservation> getReservationsByTime(LocalDateTime startTime, LocalDateTime endTime) {
         return reservationRepository.findByReservationTimeBetween(startTime, endTime);
+    }
+
+    public List<Reservation> getReservationsByUser(Member user) {
+        return reservationRepository.findByUser(user);
     }
 
 

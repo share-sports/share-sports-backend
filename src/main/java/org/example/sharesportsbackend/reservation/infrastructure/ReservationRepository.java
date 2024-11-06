@@ -1,5 +1,6 @@
 package org.example.sharesportsbackend.reservation.infrastructure;
 
+import org.example.sharesportsbackend.member.domain.Member;
 import org.example.sharesportsbackend.reservation.domain.Reservation;
 import org.example.sharesportsbackend.stadium.Stadium;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("SELECT r FROM Reservation r WHERE r.startTime BETWEEN :startTime AND :endTime OR r.endTime BETWEEN :startTime AND :endTime")
     List<Reservation> findByReservationTimeBetween(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
+    List<Reservation> findByUser(Member user);
 }
