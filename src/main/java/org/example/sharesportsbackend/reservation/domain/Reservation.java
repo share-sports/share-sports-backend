@@ -27,9 +27,10 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReservationStatus status;  // status Enum 추가
-}
 
-enum ReservationStatus {
-    ACCEPTED,
-    CANCELED
+
+    // 예약 상태 변경 메서드 추가
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
+    }
 }

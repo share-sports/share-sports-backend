@@ -4,6 +4,7 @@ package org.example.sharesportsbackend.reservation.application;
 import lombok.RequiredArgsConstructor;
 import org.example.sharesportsbackend.reservation.domain.Reservation;
 import org.example.sharesportsbackend.reservation.domain.ReservationRequestDto;
+import org.example.sharesportsbackend.reservation.domain.ReservationStatus;
 import org.example.sharesportsbackend.reservation.dto.GetReservationListDto;
 import org.example.sharesportsbackend.reservation.infrastructure.ReservationRepository;
 import org.example.sharesportsbackend.stadium.domain.Stadium;
@@ -39,13 +40,20 @@ public class ReservationService {
      * 예약 취소하기
      */
     public void cancelReservation(Long reservationId, String memberUuid) {
+        // Reservation을 ID로 찾기
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new IllegalArgumentException("예약을 찾을 수 없습니다."));
 
+        // 예약의 멤버 UUID가 요청한 멤버 UUID와 일치하는지 확인
         if (!reservation.getMemberUuid().equals(memberUuid)) {
             throw new IllegalStateException("예약을 취소할 권한이 없습니다.");
         }
-        reservationRepository.delete(reservation);
+
+        // 예약 상태를 CANCELED로 변경
+        reservation.setStatus(ReservationStatus.CANCELED);
+
+        // 변경된 예약 정보를 데이터베이스에 저장
+        reservationRepository.save(reservation);
     }
 
 
