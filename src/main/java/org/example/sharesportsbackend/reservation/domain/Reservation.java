@@ -1,57 +1,35 @@
 package org.example.sharesportsbackend.reservation.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.example.sharesportsbackend.game.domain.Team;
-import org.example.sharesportsbackend.member.domain.Member;
-import org.example.sharesportsbackend.stadium.Stadium;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DialectOverride;
-import org.springframework.cglib.core.Local;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Member user;
+    @Column(nullable = false, unique = true)
+    private String memberUuid;
 
-    @ManyToOne
-    @JoinColumn(name = "stadium_id")
-    private Stadium stadium;
+    @Column(nullable = false, unique = true)
+    private String stadiumUuid;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    private Boolean isMatched;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ReservationStatus status;  // status Enum 추가
+}
 
-
-    private int currentPlayerCount = 0;
-
-    @ManyToMany
-    @JoinTable(
-            name = "reservation_team",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id")
-    )
-    private List<Team> teams;
-
-    public Reservation(Member user, Stadium stadium, LocalDateTime startTime, LocalDateTime endTime, int playerCount) {
-        this.user = user;
-        this.stadium = stadium;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.isMatched = false;
-        this.currentPlayerCount += playerCount;
-    }
+enum ReservationStatus {
+    ACCEPTED,
+    CANCELED
 }
