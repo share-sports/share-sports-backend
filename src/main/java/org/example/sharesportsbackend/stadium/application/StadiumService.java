@@ -17,10 +17,21 @@ public class StadiumService {
     private final StadiumRepository stadiumRepository;
 
     /***
-     * 모든 구장의 목록 조회
+     * 구장 목록 검색 및 조회
+     * @param inputText 검색어 (구장 이름)
+     * @return StadiumDto 리스트
      */
-    public List<StadiumDto> getAllStadiums() {
-        return stadiumRepository.findAll().stream()
+    public List<StadiumDto> getStadiumList(String inputText) {
+        // 입력값이 있으면 해당 이름이 포함된 구장을 검색하고, 없으면 전체 구장을 조회
+        List<Stadium> stadiums;
+        if (inputText == null || inputText.isEmpty()) {
+            stadiums = stadiumRepository.findAll();
+        } else {
+            stadiums = stadiumRepository.findByNameContaining(inputText);
+        }
+
+        // StadiumDto로 변환하여 반환
+        return stadiums.stream()
                 .map(StadiumDto::fromEntity)
                 .collect(Collectors.toList());
     }

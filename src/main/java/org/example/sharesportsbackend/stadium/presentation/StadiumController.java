@@ -18,11 +18,11 @@ public class StadiumController {
 
     private final StadiumService stadiumService;
 
-    @Operation(summary = "구장 목록 조회", description = "모든 구장의 목록을 조회하는 API")
+    @Operation(summary = "구장 목록 조회", description = "검색어에 따라 구장의 목록을 조회하는 API (검색어 없을 시 전체 목록 반환)")
     @GetMapping("/list")
-    public BaseResponse<List<StadiumDto>> getStadiumList() {
-        // 모든 구장의 목록을 StadiumDto 형태로 조회하여 반환
-        List<StadiumDto> stadiums = stadiumService.getAllStadiums();
+    public BaseResponse<List<StadiumDto>> getStadiumList(@RequestParam(value = "inputText", required = false) String inputText) {
+        // 검색어에 따라 구장을 조회하여 반환
+        List<StadiumDto> stadiums = stadiumService.getStadiumList(inputText);
         return new BaseResponse<>(stadiums);
     }
 
