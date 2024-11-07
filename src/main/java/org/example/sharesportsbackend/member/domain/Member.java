@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.sharesportsbackend.game.domain.PlayerRecord;
 import org.example.sharesportsbackend.reservation.domain.Reservation;
 
 @Entity
@@ -41,11 +40,7 @@ public class Member {
     @Column(nullable = false)
     private Date birth;
 
-    @OneToMany(mappedBy = "user")
-    private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "user")
-    private List<PlayerRecord> records;
 
     @Builder
     public Member(Long id, String memberUuid, String email, Role role, String name, String password, Date birth) {
