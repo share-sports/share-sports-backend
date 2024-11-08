@@ -6,9 +6,15 @@ spring:
   profiles:
     active: local
   datasource:
+<<<<<<< Updated upstream
     url: jdbc:mysql://localhost:3306/share-sports
     username: root
     password: 1234
+=======
+    url: jdbc:mysql://${HOST}:3306/mjh_1630202
+    username: ${MJH}
+    password: ${MJH}
+>>>>>>> Stashed changes
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -61,3 +67,6 @@ springdoc:
 logging:
   level:
     org.example.sharesportsbackend: DEBUG
+
+server:
+  port: 15029
