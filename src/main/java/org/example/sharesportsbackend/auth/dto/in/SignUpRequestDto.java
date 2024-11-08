@@ -26,12 +26,10 @@ public class SignUpRequestDto {
 
     public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
-                .email(email)
                 .password(passwordEncoder.encode(password))
                 .memberUuid(UuidGenerator.generateMemberUuid())
                 .name(name)
                 .role(role)
-                .birth(birth)
                 .build();
     }
 

@@ -24,7 +24,6 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String memberUuid;
 
-    @Column(nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +36,6 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private Date birth;
 
 
