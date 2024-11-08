@@ -1,6 +1,7 @@
 package org.example.sharesportsbackend.stadium.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.sharesportsbackend.global.common.response.BaseResponse;
@@ -28,7 +29,8 @@ public class StadiumController {
 
     @Operation(summary = "구장 상세 정보 조회", description = "특정 구장의 상세 정보를 조회하는 API")
     @GetMapping("/{stadiumUuid}")
-    public BaseResponse<StadiumDto> getStadiumDetails(@PathVariable String stadiumUuid) {
+    public BaseResponse<StadiumDto> getStadiumDetails(
+            @Parameter(description = "조회할 구장의 UUID", required = true) @PathVariable String stadiumUuid) {
         // stadiumUuid에 해당하는 구장의 상세 정보를 StadiumDto 형태로 조회하여 반환
         StadiumDto stadium = stadiumService.getStadiumDetails(stadiumUuid);
         return new BaseResponse<>(stadium);

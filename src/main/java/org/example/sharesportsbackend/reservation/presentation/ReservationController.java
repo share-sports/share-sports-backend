@@ -46,15 +46,19 @@ public class ReservationController {
 
     @Operation(summary = "예약하기", description = "예약 추가 API")
     @PostMapping("/reserve")
-    public BaseResponse<Void> createReservation(@AuthenticationPrincipal UserDetails userDetails, ReservationRequestDto reservationRequestDto){
-        reservationService.createReservation(reservationRequestDto);
+    public BaseResponse<Void> createReservation(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "예약 요청 정보")
+            @RequestBody ReservationRequestDto reservationRequestDto) {
+
+        reservationService.createReservation(reservationRequestDto,userDetails.getUsername());
         return new BaseResponse<>();
     }
 
 
     @Operation(summary = "예약 취소하기", description = "예약 삭제 API")
     @PostMapping("/cancel")
-    public BaseResponse<Void> deleteReservation(@AuthenticationPrincipal UserDetails userDetails, Long reservationId){
+    public BaseResponse<Void> deleteReservation(@AuthenticationPrincipal UserDetails userDetails,@RequestBody Long reservationId){
         reservationService.cancelReservation(reservationId,userDetails.getUsername());
         return new BaseResponse<>();
     }

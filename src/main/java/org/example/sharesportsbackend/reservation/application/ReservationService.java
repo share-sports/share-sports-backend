@@ -12,7 +12,6 @@ import org.example.sharesportsbackend.stadium.repository.StadiumRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,14 +25,14 @@ public class ReservationService {
     /**
      * 예약하기 (예약할 때 겹치는 시간이 있는지 확인해야 함.)
      */
-    public void createReservation(ReservationRequestDto reservationRequestDto) {
+    public void createReservation(ReservationRequestDto reservationRequestDto, String memberUuid) {
         // 1. 해당 구장에 예약된 시간 중 겹치는 예약이 있는지 확인
         boolean hasOverlap = reservationRepository.existsByStadiumAndTimeRange(reservationRequestDto.getStadiumUuid(), reservationRequestDto.getStartTime(), reservationRequestDto.getEndTime());
         if (hasOverlap) {
             throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
         }
 
-        reservationRepository.save(reservationRequestDto.createEntity());
+        reservationRepository.save(reservationRequestDto.createEntity(memberUuid));
     }
 
     /**

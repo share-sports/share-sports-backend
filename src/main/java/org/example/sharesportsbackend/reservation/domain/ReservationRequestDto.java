@@ -1,9 +1,6 @@
 package org.example.sharesportsbackend.reservation.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,13 +8,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 public class ReservationRequestDto {
-    private String memberUuid;
     private String stadiumUuid;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    public Reservation createEntity(){
+    public Reservation createEntity(String memberUuid){
         return Reservation.builder()
                 .memberUuid(memberUuid)
                 .stadiumUuid(stadiumUuid)
@@ -26,4 +23,5 @@ public class ReservationRequestDto {
                 . status(ReservationStatus.ACCEPTED)
                 .build();
     }
+
 }

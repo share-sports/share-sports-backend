@@ -15,10 +15,10 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String memberUuid;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String stadiumUuid;
 
     private LocalDateTime startTime;
