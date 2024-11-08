@@ -11,15 +11,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
-    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Reservation r WHERE r.stadiumUuid = :stadium AND ((r.startTime < :endTime AND r.endTime > :startTime))")
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Reservation r WHERE r.stadiumUuid = :stadiumUuid AND ((r.startTime < :endTime AND r.endTime > :startTime))")
     boolean existsByStadiumAndTimeRange(@Param("stadiumUuid") String stadiumUuid, @Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
-
-    List<Reservation> findByStadium(Stadium stadium);
 
     @Query("SELECT r FROM Reservation r WHERE r.startTime BETWEEN :startTime AND :endTime OR r.endTime BETWEEN :startTime AND :endTime")
     List<Reservation> findByReservationTimeBetween(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
-    List<Reservation> findByUser(Member user);
 
 
     @Query("select r from Reservation r where r.memberUuid=:memberUuid")
