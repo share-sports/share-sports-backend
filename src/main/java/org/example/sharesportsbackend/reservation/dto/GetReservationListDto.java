@@ -19,6 +19,8 @@ public class GetReservationListDto {
 
     // Stadium 정보 추가
     private Long stadiumId;
+    private String stadiumUuid;
+
     private String stadiumName;
     private String stadiumAddress;
     private String stadiumPhone;
@@ -30,8 +32,9 @@ public class GetReservationListDto {
                 .memberUuid(reservation.getMemberUuid())
                 .startTime(reservation.getStartTime())
                 .endTime(reservation.getEndTime())
-                .stadiumId(stadium.getId())
-                .stadiumName(stadium.getName())
+                .stadiumId(stadium.getStadiumId())
+                .stadiumUuid(stadium.getStadiumUuid())
+                .stadiumName(stadium.getStadiumName())
                 .stadiumAddress(stadium.getAddress())
                 .stadiumPhone(stadium.getPhone())
                 .build();

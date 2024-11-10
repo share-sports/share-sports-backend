@@ -27,7 +27,7 @@ public class StadiumService {
         if (inputText == null || inputText.isEmpty()) {
             stadiums = stadiumRepository.findAll();
         } else {
-            stadiums = stadiumRepository.findByNameContaining(inputText);
+            stadiums = stadiumRepository.findByStadiumNameContaining(inputText);
         }
 
         // StadiumDto로 변환하여 반환

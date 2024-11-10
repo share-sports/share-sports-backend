@@ -15,6 +15,6 @@ public interface StadiumRepository extends JpaRepository<Stadium,Long> {
 
     Optional<Stadium> findByStadiumUuid(String stadiumUuid);
     // 이름에 검색어가 포함된 구장 목록을 조회하는 메서드
-    List<Stadium> findByNameContaining(String name);
+    List<Stadium> findByStadiumNameContaining(String stadiumName);  // 'stadiumName' 필드에 맞게 수정
 
 }

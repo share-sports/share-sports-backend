@@ -8,7 +8,7 @@ import org.example.sharesportsbackend.stadium.domain.Stadium;
 @AllArgsConstructor
 public class StadiumDto {
     private String stadiumUuid;
-    private String name;
+    private String stadiumName;
     private String address;
     private String phone;
     private String description;
@@ -24,7 +24,7 @@ public class StadiumDto {
     public static StadiumDto fromEntity(Stadium stadium) {
         return new StadiumDto(
                 stadium.getStadiumUuid(),
-                stadium.getName(),
+                stadium.getStadiumName(),
                 stadium.getAddress(),
                 stadium.getPhone(),
                 stadium.getDescription(),

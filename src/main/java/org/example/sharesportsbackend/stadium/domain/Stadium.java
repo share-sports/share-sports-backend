@@ -20,8 +20,8 @@ public class Stadium {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stadium_id", nullable = false)
-    private Long id;
+    @Column(nullable = false)
+    private Long stadiumId;
 
     @Column(nullable = false, unique = true)
     private String stadiumUuid;
@@ -30,7 +30,7 @@ public class Stadium {
     private String hostUuid;
 
     @Column(nullable = false)
-    private String name;
+    private String stadiumName;
 
     @Column(nullable = false)
     private String address;
