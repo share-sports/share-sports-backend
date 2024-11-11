@@ -14,7 +14,11 @@ import org.example.sharesportsbackend.stadium.repository.StadiumRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,13 +29,15 @@ public class ReservationService {
     private final StadiumRepository stadiumRepository;
 
     private final MemberRepository memberRepository;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm");
+
 
     /**
      * 예약하기 (예약할 때 겹치는 시간이 있는지 확인해야 함.)
      */
     public void createReservation(ReservationRequestDto reservationRequestDto, String memberUuid) {
         // 1. 해당 구장에 예약된 시간 중 겹치는 예약이 있는지 확인
-        boolean hasOverlap = reservationRepository.existsByStadiumAndTimeRange(reservationRequestDto.getStadiumUuid(), reservationRequestDto.getStartTime(), reservationRequestDto.getEndTime());
+        boolean hasOverlap = reservationRepository.existsByStadiumAndTimeRange(reservationRequestDto.getStadiumUuid(), LocalDateTime.parse(reservationRequestDto.getStartTime(), FORMATTER), LocalDateTime.parse(reservationRequestDto.getEndTime(), FORMATTER));
         if (hasOverlap) {
             throw new IllegalStateException("이미 해당 시간에 예약이 존재합니다.");
         }
@@ -100,4 +106,25 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
+    public List<GetReservationListDto> getReservationsByStadiumAndDate(String stadiumUuid, String date) {
+        // date 문자열의 공백과 따옴표 제거
+        date = date.trim().replaceAll("^\"|\"$", "");
+
+        // date 문자열을 LocalDate로 변환
+        LocalDate targetDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+
+        // 해당 날짜의 시작 시간과 종료 시간 설정
+        LocalDateTime startOfDay = targetDate.atStartOfDay();
+        LocalDateTime endOfDay = targetDate.plusDays(1).atStartOfDay();
+
+        // 예약 목록 조회
+        List<Reservation> reservations = reservationRepository.findByStadiumUuidAndStartTimeBetween(
+                stadiumUuid, startOfDay, endOfDay
+        );
+
+        // Reservation과 Stadium 객체를 사용하여 GetReservationListDto로 변환
+        return reservations.stream()
+                .map(reservation -> GetReservationListDto.from(reservation, stadiumRepository.findByStadiumUuid(stadiumUuid).get()))
+                .collect(Collectors.toList());
+    }
 }

@@ -1,6 +1,7 @@
 package org.example.sharesportsbackend.reservation.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.sharesportsbackend.global.common.response.BaseResponse;
@@ -33,11 +34,21 @@ public class ReservationController {
         return new BaseResponse<>(list);
     }
 
-    @Operation(summary = "구장별 예약 조회", description = "특정 스타디움의 예약 목록을 조회하는 API")
-    @GetMapping("/stadium/{stadiumUuid}")
-    public BaseResponse<List<GetReservationListDto>> getReservationsByStadium(@PathVariable String stadiumUuid) {
-        // 스타디움 UUID를 통해 예약 목록 조회
-        List<GetReservationListDto> list = reservationService.getReservationsByStadium(stadiumUuid);
+    @Operation(summary = "구장별 예약 조회", description = "특정 스타디움의 예약 목록을 날짜와 함께 조회하는 API")
+    @GetMapping("/stadium")
+    public BaseResponse<List<GetReservationListDto>> getReservationsByStadium(
+            @RequestParam("stadiumUuid") String stadiumUuid,
+
+            @RequestParam(name = "date", required = false) String date) {
+
+        // 날짜가 제공되었을 경우 해당 날짜에 맞는 예약 목록 조회
+        List<GetReservationListDto> list;
+        if (date != null) {
+            list = reservationService.getReservationsByStadiumAndDate(stadiumUuid, date);
+        } else {
+            // 날짜가 제공되지 않았을 경우 모든 예약 목록 조회
+            list = reservationService.getReservationsByStadium(stadiumUuid);
+        }
 
         // BaseResponse로 감싸서 반환
         return new BaseResponse<>(list);

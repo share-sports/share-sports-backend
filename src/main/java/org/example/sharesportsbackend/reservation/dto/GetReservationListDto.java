@@ -3,6 +3,7 @@ package org.example.sharesportsbackend.reservation.dto;
 import lombok.Builder;
 import lombok.Getter;
 import org.example.sharesportsbackend.reservation.domain.Reservation;
+import org.example.sharesportsbackend.reservation.domain.ReservationStatus;
 import org.example.sharesportsbackend.stadium.domain.Stadium;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,8 @@ public class GetReservationListDto {
     private String stadiumName;
     private String stadiumAddress;
     private String stadiumPhone;
+
+    private ReservationStatus status;
 
     // Reservation과 Stadium을 받아 DTO로 변환하는 정적 메서드
     public static GetReservationListDto from(Reservation reservation, Stadium stadium, String memberName) {
@@ -55,4 +58,6 @@ public class GetReservationListDto {
                 .stadiumPhone(stadium.getPhone())
                 .build();
     }
+
+
 }

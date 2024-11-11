@@ -24,4 +24,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
 
     @Query("select r from Reservation r where r.stadiumUuid=:stadiumUuid")
     List<Reservation> findByStadiumUuid(@Param("stadiumUuid")String stadiumUuid);
+
+    List<Reservation> findByStadiumUuidAndStartTimeBetween(String stadiumUuid, LocalDateTime start, LocalDateTime end);
+
 }
