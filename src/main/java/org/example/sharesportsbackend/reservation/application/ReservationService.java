@@ -117,14 +117,26 @@ public class ReservationService {
         LocalDateTime startOfDay = targetDate.atStartOfDay();
         LocalDateTime endOfDay = targetDate.plusDays(1).atStartOfDay();
 
+        // Stadium 정보 가져오기
+        Stadium stadium = stadiumRepository.findByStadiumUuid(stadiumUuid)
+                .orElseThrow(() -> new RuntimeException("Stadium not found for UUID: " + stadiumUuid));
+
         // 예약 목록 조회
         List<Reservation> reservations = reservationRepository.findByStadiumUuidAndStartTimeBetween(
                 stadiumUuid, startOfDay, endOfDay
         );
 
-        // Reservation과 Stadium 객체를 사용하여 GetReservationListDto로 변환
+        // 각 Reservation의 memberUuid를 통해 Member 정보를 조회하여 DTO 생성
         return reservations.stream()
-                .map(reservation -> GetReservationListDto.from(reservation, stadiumRepository.findByStadiumUuid(stadiumUuid).get()))
+                .map(reservation -> {
+                    // 각 Reservation의 memberUuid를 통해 Member 정보 조회
+                    Member member = memberRepository.findByMemberUuid(reservation.getMemberUuid())
+                            .orElseThrow(() -> new RuntimeException("Member not found for UUID: " + reservation.getMemberUuid()));
+
+                    // Reservation, Stadium, Member 정보를 조합하여 DTO 생성
+                    return GetReservationListDto.from(reservation, stadium, member.getName());
+                })
                 .collect(Collectors.toList());
     }
+
 }
