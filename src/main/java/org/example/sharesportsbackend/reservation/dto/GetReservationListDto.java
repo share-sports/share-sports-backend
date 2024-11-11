@@ -14,6 +14,7 @@ public class GetReservationListDto {
 
     private Long reservationId;
     private String memberUuid;
+    private String memberName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -26,6 +27,21 @@ public class GetReservationListDto {
     private String stadiumPhone;
 
     // Reservation과 Stadium을 받아 DTO로 변환하는 정적 메서드
+    public static GetReservationListDto from(Reservation reservation, Stadium stadium, String memberName) {
+        return GetReservationListDto.builder()
+                .reservationId(reservation.getId())
+                .memberUuid(reservation.getMemberUuid())
+                .startTime(reservation.getStartTime())
+                .endTime(reservation.getEndTime())
+                .stadiumId(stadium.getStadiumId())
+                .stadiumUuid(stadium.getStadiumUuid())
+                .stadiumName(stadium.getStadiumName())
+                .stadiumAddress(stadium.getAddress())
+                .stadiumPhone(stadium.getPhone())
+                .memberName(memberName)
+                .build();
+    }
+
     public static GetReservationListDto from(Reservation reservation, Stadium stadium) {
         return GetReservationListDto.builder()
                 .reservationId(reservation.getId())

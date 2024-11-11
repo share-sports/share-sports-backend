@@ -2,6 +2,8 @@ package org.example.sharesportsbackend.reservation.application;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.sharesportsbackend.member.domain.Member;
+import org.example.sharesportsbackend.member.infrastructure.MemberRepository;
 import org.example.sharesportsbackend.reservation.domain.Reservation;
 import org.example.sharesportsbackend.reservation.domain.ReservationRequestDto;
 import org.example.sharesportsbackend.reservation.domain.ReservationStatus;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final StadiumRepository stadiumRepository;
+
+    private final MemberRepository memberRepository;
 
     /**
      * 예약하기 (예약할 때 겹치는 시간이 있는지 확인해야 함.)
@@ -67,9 +71,16 @@ public class ReservationService {
         // StadiumUuid로 Reservation 목록을 가져옴
         List<Reservation> reservations = reservationRepository.findByStadiumUuid(stadiumUuid);
 
-        // 각 Reservation에 대해 Stadium 정보를 추가로 조합하고 DTO로 변환
+        // 각 Reservation에 대해 Member 정보를 추가로 가져와서 DTO로 변환
         return reservations.stream()
-                .map(reservation -> GetReservationListDto.from(reservation, stadium))
+                .map(reservation -> {
+                    // 각 Reservation의 memberUuid를 통해 Member 정보 조회
+                    Member member = memberRepository.findByMemberUuid(reservation.getMemberUuid())
+                            .orElseThrow(() -> new RuntimeException("Member not found for UUID: " + reservation.getMemberUuid()));
+
+                    // Reservation, Stadium, Member 정보를 조합하여 DTO 생성
+                    return GetReservationListDto.from(reservation, stadium, member.getName());
+                })
                 .collect(Collectors.toList());
     }
 
