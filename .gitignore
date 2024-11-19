@@ -46,3 +46,4 @@ out/
 *.idea
 .env
 Dockerfile
+docker-compose.yml
